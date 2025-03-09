@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/changeset/create-users-tables.sql
+  - include:
+      file: db/changelog/changeset/create-user-verification-table-and-update-user.sql
+  - include:
+      file: db/changelog/changeset/create-table-jwt-refresh-and-update-user-verification.sql

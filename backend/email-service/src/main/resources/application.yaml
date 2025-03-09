@@ -1,0 +1,48 @@
+spring:
+  application:
+    name: email-service
+  mail:
+    host: smtp.gmail.com
+    username: sharam.artur@gmail.com
+    password: # пароль для приложения
+    port: 587
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+        smtps:
+          trust: smtp.gmail.com
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: 1
+    url: jdbc:postgresql://localhost:5432/postgres
+server:
+  port: 0
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
+org:
+  jobrunr:
+    background-job-server:
+      enabled: true
+    dashboard:
+      enabled: true
+      port: 8000
+    miscellaneous:
+      allow-anonymous-data-usage: false
+    jobs:
+      retry-back-off-time-seed: 1
+    database:
+      table-prefix: task_manager
+
+email:
+  fromAddress: sharam.artur@gmail.com
+  subjects:
+    verification: Task Manager | Verification
+    invitation: Task Manager | Invite to Board

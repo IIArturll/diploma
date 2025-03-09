@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/changeset/create-task-tables.sql
+  - include:
+      file: db/changelog/changeset/create-board-tables.sql
+  - include:
+      file: db/changelog/changeset/create-trigger-on-create-board.sql
+  - include:
+      file: db/changelog/changeset/create-trigger-on-delete-bard-tasks-record.sql
+  - include:
+      file: db/changelog/changeset/create-trigger-for-delete-old-board-user-access.sql
