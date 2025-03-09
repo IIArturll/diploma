@@ -1,0 +1,595 @@
+{
+	"info": {
+		"_postman_id": "e0c54a60-9265-46bc-a0f8-2236766ebdb4",
+		"name": "task-manager",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24575165"
+	},
+	"item": [
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "registration",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"artik123124\",\n    \"email\": \"cherv9nidze@mail.ru\",\n    \"password\": \"123456789\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/user/registration",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"user",
+								"registration"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "verify",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/user/verify?email=cherv9nidze@mail.ru&code=127cc1cf-53e4-4fde-9d99-08684ef5014b",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"user",
+								"verify"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "cherv9nidze@mail.ru"
+								},
+								{
+									"key": "code",
+									"value": "127cc1cf-53e4-4fde-9d99-08684ef5014b"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\":\"cherv9nidze@mail.ru\",\n    \"password\":\"123456789\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/user/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"user",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "refresh",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/user/refresh",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"user",
+								"refresh"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "me",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/user/me",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"user",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/user/logout?refreshToken",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"user",
+								"logout"
+							],
+							"query": [
+								{
+									"key": "refreshToken",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "micro/getEntity",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://192.168.100.3:8080/micro/user/entity/artik.sharam@gmail.com",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"100",
+								"3"
+							],
+							"port": "8080",
+							"path": [
+								"micro",
+								"user",
+								"entity",
+								"artik.sharam@gmail.com"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "micro/getDetails",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://192.168.100.3:8080/micro/user/details/artik.sharam@gmail.com",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"100",
+								"3"
+							],
+							"port": "8080",
+							"path": [
+								"micro",
+								"user",
+								"details",
+								"artik.sharam@gmail.com"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "board",
+			"item": [
+				{
+					"name": "getNames",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhcnRpay5zaGFyYW1AZ21haWwuY29tIiwiaWF0IjoxNzQwMDY2OTIzLCJleHAiOjE3NDAwNzA1MjMsInJvbGUiOiJVU0VSIn0.BlwPWf-8Wny5vzgoc4yDJbkZtAzhDI4_YdP1s099klYqyfo-p-FrIxKLJ5D1dU51joDXypnFHGKntStN2Mm6SQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/board",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"board"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhcnRpay5zaGFyYW1AZ21haWwuY29tIiwiaWF0IjoxNzM5OTcxNDk3LCJleHAiOjE3Mzk5NzUwOTcsInJvbGUiOiJVU0VSIn0.PAmrNtMroIyPdR40w_NZyVmCfrO8ULgusxXpE90NT5O-qvpwqWaw2qtoQ4qy97MNZDRe0I86m-f2i0V4ezg9rw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"firstBoard\",\n    \"description\": \"test\",\n    \"type\": \"KANBAN\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/board",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"board"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getByID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhcnRpay5zaGFyYW1AZ21haWwuY29tIiwiaWF0IjoxNzM5OTc1OTU3LCJleHAiOjE3Mzk5Nzk1NTcsInJvbGUiOiJVU0VSIn0.9ttW8gZNM3gr1TwDnA1FWGvgqzgDwnIWLU6UdVPwY_pMKxpzB_LE6DNxrJGGpRvBhsfsYddSTYVo_iLTG4n1tw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/board/b41ec152-f0d9-44b1-873a-fd851b1d240c",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"board",
+								"b41ec152-f0d9-44b1-873a-fd851b1d240c"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addTask",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhcnRpay5zaGFyYW1AZ21haWwuY29tIiwiaWF0IjoxNzQwMDY2OTIzLCJleHAiOjE3NDAwNzA1MjMsInJvbGUiOiJVU0VSIn0.BlwPWf-8Wny5vzgoc4yDJbkZtAzhDI4_YdP1s099klYqyfo-p-FrIxKLJ5D1dU51joDXypnFHGKntStN2Mm6SQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"description\": \"create task\",\n    \"status\": \"PENDING\",\n    \"positionY\": 2,\n    \"tags\": [\n        {\n            \"tag\": \"first\"\n        },\n        {\n            \"tag\": \"second\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/board/ce0f0713-a478-4f53-8e16-f8653aadb638/add",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"board",
+								"ce0f0713-a478-4f53-8e16-f8653aadb638",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "removeTask",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhcnRpay5zaGFyYW1AZ21haWwuY29tIiwiaWF0IjoxNzQwMDU5MzE0LCJleHAiOjE3NDAwNjI5MTQsInJvbGUiOiJVU0VSIn0.oy4EHIl3D3qYJbo2twbBCXclpqwJfwVXzRnMQHavA4E7FGfvguZY-wPSais2ckzvQo8QiOZQT5keZulrPxUojw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/board/${board_id}/task/{task_id}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"board",
+								"${board_id}",
+								"task",
+								"{task_id}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"\",\n    \"name\":\"\",\n    \"description\":\"\",\n    \"tasks\": [\n        {\n            \"id\": \"\",\n            \"description\": \"create task\",\n            \"status\": \"PENDING\",\n            \"positionY\": 1,\n            \"tags\": \n            [\n                {\n                    \"id\": 1,\n                    \"tag\": \"first\"\n                },\n                {\n                    \"tag\": \"backend\"\n                }\n            ]\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/board/update",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"board",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "removeBoard",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjaGVydjluaWR6ZUBtYWlsLnJ1IiwiaWF0IjoxNzQxNTM1MTM4LCJleHAiOjE3NDE1Mzg3MzgsInJvbGUiOiJVU0VSIn0.iRLFUPqGg7446YCmFNcpGgtZOkWjDHj6TN0W_I-_kHvqI_VhZSUub_DCML2XldR9kggDxG9sGkuiJtXgx6_5Cg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/board/b41ec152-f0d9-44b1-873a-fd851b1d240c",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"board",
+								"b41ec152-f0d9-44b1-873a-fd851b1d240c"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sendInvite",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjaGVydjluaWR6ZUBnbWFpbC5jb20iLCJpYXQiOjE3NDA0MzcxMjYsImV4cCI6MTc0MDQ0MDcyNiwicm9sZSI6IlVTRVIifQ.9ayhthwTgMDnp-_Syy4yOv-DC86QbZ1PewtCuj44Vp7bRzI_A7Kcm5xbz_ph-IsIP5MObezDgN0IextYlw08lw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/board/invite?board=bf09ae35-40ea-4904-a2bc-a02c94575f22&email=cherv9nidze@mail.ru",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"board",
+								"invite"
+							],
+							"query": [
+								{
+									"key": "board",
+									"value": "bf09ae35-40ea-4904-a2bc-a02c94575f22"
+								},
+								{
+									"key": "email",
+									"value": "cherv9nidze@mail.ru"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "respondInvite",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjaGVydjluaWR6ZUBtYWlsLnJ1IiwiaWF0IjoxNzQxNTM1MTM4LCJleHAiOjE3NDE1Mzg3MzgsInJvbGUiOiJVU0VSIn0.iRLFUPqGg7446YCmFNcpGgtZOkWjDHj6TN0W_I-_kHvqI_VhZSUub_DCML2XldR9kggDxG9sGkuiJtXgx6_5Cg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/board/invite/respond?code&accept=true",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"board",
+								"invite",
+								"respond"
+							],
+							"query": [
+								{
+									"key": "code",
+									"value": null
+								},
+								{
+									"key": "accept",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "kick",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/board/kick?board&email",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"board",
+								"kick"
+							],
+							"query": [
+								{
+									"key": "board",
+									"value": null
+								},
+								{
+									"key": "email",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "test",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "test2",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
