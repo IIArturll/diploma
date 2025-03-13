@@ -64,11 +64,6 @@ public class UserServiceImpl implements UserService {
         userEventPublisher.publishEvent(entity);
     }
 
-    @TransactionalEventListener
-    public void onInviteEvent(UserEntity savedEntity) {
-        CompletableFuture.runAsync(() -> emailClient.sendVerificationEmail(savedEntity.getEmail()));
-    }
-
     @Override
     public UserDTO getMe() {
         return userMapper.toDto(getAuthorizedUser());
