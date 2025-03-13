@@ -15,12 +15,4 @@ import java.util.UUID;
 @Repository
 public interface BoardRepository extends CrudRepository<BoardEntity, UUID> {
 
-    @Query(value = """
-    SELECT new artur.proj.boardservice.core.dtos.BoardNameDTO(b.id, b.name) 
-    FROM BoardUserAccessEntity bua
-    JOIN BoardEntity b ON b = bua.board
-    WHERE (b.owner = :user
-    OR (bua.user = :user AND bua.status = 'ACCEPTED'))
-    """)
-    List<BoardNameDTO> findAllBoardNamesByUser(@Param("user") UserEntity user);
 }
