@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-@Transactional
 public interface BoardService {
 
     void create(BoardCreateDTO dto);
