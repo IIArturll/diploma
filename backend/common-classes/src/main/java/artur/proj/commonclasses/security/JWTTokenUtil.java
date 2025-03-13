@@ -18,8 +18,6 @@ public class JWTTokenUtil {
 
     @Value("${jwt.access.expirationSeconds}")
     private Long jwtAccessExpirationSeconds;
-    @Value("")
-    private Long jwtRefreshExpirationSeconds;
 
     private SecretKey getSigningKey() {
         byte[] keyBytes = Arrays.copyOf(jwtAccessSecret.getBytes(StandardCharsets.UTF_8), 64);
