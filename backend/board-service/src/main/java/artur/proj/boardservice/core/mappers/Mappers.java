@@ -19,7 +19,7 @@ public interface Mappers {
     BoardEntity toEntity(BoardCreateDTO boardCreateDTO);
 
     TaskEntity toEntity(TaskDTO taskDTO);
-    TaskDTO toDTO(TaskEntity taskPositionEntity);
+    TaskDTO toDTO(TaskEntity taskEntity);
 
     MyUserDetails toMyUserDetails(UserEntity entity);
     List<TagDTO> toTagDTO(List<TagEntity> tagEntity);
