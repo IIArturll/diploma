@@ -95,7 +95,7 @@ public class BoardController {
 
     @DeleteMapping("/kick")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    private void kick(@RequestParam("board") UUID board,
+    public void kick(@RequestParam("board") UUID board,
                       @Pattern(regexp = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$",
                               message = "illegal format of email,correct example: email@mail.ru , google@gmail.com")
                       @RequestParam("email") String email) {
