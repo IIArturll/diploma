@@ -26,7 +26,7 @@ public class UserMicroController {
     }
 
     @GetMapping("/entity/{email}")
-    Optional<UserEntity> getEntityByEmail(@PathVariable("email") String email){
+    public Optional<UserEntity> getEntityByEmail(@PathVariable("email") String email){
         Optional<UserEntity> userByEmail = myUserDetailsService.findUserByEmail(email);
         return userByEmail;
     }
