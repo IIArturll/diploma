@@ -60,13 +60,13 @@ public class BoardController {
     }
 
     @PutMapping("/{boardId}/remove/{taskId}")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void removeTask(@PathVariable("boardId") UUID boardId, @PathVariable("taskId") UUID taskId) {
         service.removeTask(boardId, taskId);
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable("id") UUID id) {
         service.delete(id);
     }
