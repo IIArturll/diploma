@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+/* Для скрытия скроллбара */
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hidden {
+  -ms-overflow-style: none; /* Для старых браузеров */
+  scrollbar-width: none; /* Для Firefox */
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #e00d0d;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
