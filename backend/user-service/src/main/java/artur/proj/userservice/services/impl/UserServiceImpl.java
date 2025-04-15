@@ -16,6 +16,7 @@ import artur.proj.userservice.security.MyUserDetailsService;
 import artur.proj.userservice.services.RefreshTokenService;
 import artur.proj.userservice.services.UserService;
 import jakarta.transaction.Transactional;
+import org.springframework.context.event.EventListener;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,6 +24,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.event.TransactionalEventListener;
 
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 @Service
@@ -55,13 +57,26 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void register(UserCreateDTO userDto) {
-        if (userRepository.findByEmail(userDto.email()).isPresent()) {
+        Optional<UserEntity> byEmail = userRepository.findByEmail(userDto.email());
+        if (byEmail.isPresent() && !byEmail.get().getStatus().equals(UserStatus.WAITING_ACTIVATION)) {
             throw new UserAlreadyExistsException(userDto.email());
+        } else if (byEmail.isEmpty()) {
+            UserEntity entity = userMapper.toEntity(userDto);
+            entity.setPassword(passwordEncoder.encode(userDto.password()));
+            userRepository.save(entity);
+            userEventPublisher.publishEvent(entity);
+        } else {
+            UserEntity entity = byEmail.get();
+            entity.setPassword(passwordEncoder.encode(userDto.password()));
+            userRepository.save(entity);
+            userEventPublisher.publishEvent(entity);
         }
-        UserEntity entity = userMapper.toEntity(userDto);
-        entity.setPassword(passwordEncoder.encode(userDto.password()));
-        userRepository.save(entity);
-        userEventPublisher.publishEvent(entity);
+    }
+
+    @TransactionalEventListener
+    public void handleUserCreatedEvent(UserEntity userEntity) {
+        CompletableFuture.runAsync(() -> emailClient.sendVerificationEmail(userEntity.getEmail()));
+//        emailClient.sendVerificationEmail(userEntity.getEmail());
     }
 
     @Override
@@ -98,7 +113,7 @@ public class UserServiceImpl implements UserService {
             throw new UserNotVerifiedException(userIdentifier);
         }
         if (passwordEncoder.matches(user.password(), entity.getPassword())) {
-            MyUserDetails userDetails = userDetailsService.loadUserByUsername(entity.getEmail());
+            MyUserDetails userDetails = new MyUserDetails(entity);
             return new AuthDTO(jwtTokenUtil.generateAccessToken(userDetails),
                     refreshTokenService.createRefreshToken(userIdentifier).getToken());
         } else {

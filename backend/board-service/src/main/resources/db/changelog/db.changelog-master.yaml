@@ -9,3 +9,5 @@ databaseChangeLog:
       file: db/changelog/changeset/create-trigger-on-delete-bard-tasks-record.sql
   - include:
       file: db/changelog/changeset/create-trigger-for-delete-old-board-user-access.sql
+  - include:
+      file: db/changelog/changeset/add-week-on-board-type.sql

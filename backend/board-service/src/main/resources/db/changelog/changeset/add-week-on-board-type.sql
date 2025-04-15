@@ -1,0 +1,1 @@
+ALTER TYPE task_manager.board_type ADD VALUE 'WEEK';

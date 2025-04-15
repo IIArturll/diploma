@@ -1,5 +1,6 @@
 package artur.proj.commonclasses.security;
 
+import artur.proj.commonclasses.entities.UserEntity;
 import artur.proj.commonclasses.entities.UserStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,6 +24,14 @@ public class MyUserDetails implements UserDetails {
     private String username;
     private String password;
     private UserStatus status;
+
+    public MyUserDetails(UserEntity user) {
+        this.id = user.getId();
+        this.email = user.getEmail();
+        this.username = user.getUsername();
+        this.password = user.getPassword();
+        this.status = user.getStatus();
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

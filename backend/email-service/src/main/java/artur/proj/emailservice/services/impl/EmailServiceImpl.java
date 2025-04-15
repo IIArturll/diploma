@@ -42,7 +42,7 @@ public class EmailServiceImpl implements EmailService {
     public boolean verify(String recipient, String code) {
         UserVerificationEntity entity = verificationRepository.findById(recipient).orElseThrow(
                 () -> new UserNotFoundException(recipient));
-        if(entity.getExpiryDate().isAfter(Instant.now())) {
+        if(entity.getExpiryDate().isBefore(Instant.now())) {
             throw new VerificationCodeExpiredException();
         }
         return Objects.equals(entity.getCode(), code);
