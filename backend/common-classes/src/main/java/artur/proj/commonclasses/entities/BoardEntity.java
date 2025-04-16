@@ -11,6 +11,7 @@ import org.hibernate.annotations.JdbcType;
 import org.hibernate.dialect.PostgreSQLEnumJdbcType;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -35,11 +36,11 @@ public class BoardEntity {
     @ManyToOne()
     @JoinColumn(name = "owner_id")
     private UserEntity owner;
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(schema = "task_manager", name = "board_tasks",
             joinColumns = @JoinColumn(name = "board_id"),
             inverseJoinColumns = @JoinColumn(name = "task_id"))
-    private List<TaskEntity> tasks;
+    private Set<TaskEntity> tasks;
     @OneToMany(mappedBy = "board")
     private List<BoardUserAccessEntity> boardUserAccesses;
 }

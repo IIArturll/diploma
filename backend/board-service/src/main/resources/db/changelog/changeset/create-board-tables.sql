@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS task_manager.board_tasks(
     task_id UUID NOT NULL,
     CONSTRAINT board_tasks_pk PRIMARY KEY (board_id,task_id),
     CONSTRAINT board_fk FOREIGN KEY (board_id) references task_manager.boards(id) ON DELETE CASCADE,
-    CONSTRAINT task_pos_fk FOREIGN KEY (task_id) references task_manager.tasks(id) ON DELETE CASCADE
+    CONSTRAINT task_fk FOREIGN KEY (task_id) references task_manager.tasks(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS task_manager.user_boards(
