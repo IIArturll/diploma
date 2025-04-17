@@ -23,6 +23,9 @@ type ListProps = {
   setIsInviteUserOpen: React.Dispatch<React.SetStateAction<boolean>>
   isKickUserOpen: boolean,
   setIsKickUserOpen: React.Dispatch<React.SetStateAction<boolean>>
+  onTimerClicked: ()=>void;
+  currentTask: Task | null,
+  setCurrentTask: React.Dispatch<React.SetStateAction<Task | null>>
 };
 
 export default function ListPage({ 
@@ -38,14 +41,15 @@ export default function ListPage({
   setIsInviteUserOpen,
   isKickUserOpen,
   setIsKickUserOpen,
+  onTimerClicked,
+  currentTask,
+  setCurrentTask
 }: ListProps) {
 
   
   const maxPositionY = board.tasks.length > 0
   ? Math.max(...board.tasks.map((task) => task.positionY ?? 0))
   : 0;
-
-  const [currentTask, setCurrentTask] = useState<Task | null>(null);
 
   const {
     onCreateTaskButtonClicked,
@@ -84,8 +88,6 @@ export default function ListPage({
     onKickButtonClicked,
     onCancelClicked,
     onDeleteClicled,
-    isMenuOpen,
-    onMenuSettingsClick
   } = useBoardSettings(selectedBoardId,board,setIsBoardEditOpen,setIsInviteUserOpen,setIsKickUserOpen,fetchBoardById);
 
   if(!isSelected) return null;
@@ -178,6 +180,7 @@ export default function ListPage({
           setIsModalOpen={setIsModalOpen}
           onExecutorClick={onExecutorClick}
           onRemoveClicked={onRemoveClicked}
+          onTimerClicked={onTimerClicked}
         /> : null}
     </div>
   );

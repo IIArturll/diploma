@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
-import ListPage from "./list/ListPage";
+import ListPage from "@/app/components/main/list/ListPage";
 import { useMain } from "@/app/features/useMain"
-import RespondOnInviteModal from "./RespondOnInviteModal";
+import RespondOnInviteModal from "@/app/components/main/RespondOnInviteModal";
+import KanbanPage from "@/app/components/main/kanban/KanbanPage";
+import { TimerModal } from "./TimerModal";
+import { useTimer } from "@/app/features/useTimer";
+import { Task } from "@/app/types/Task";
 
 type MainProps = {
   selectedBoardId: string
@@ -9,6 +13,8 @@ type MainProps = {
 };
 
 export default function Main({selectedBoardId, fetchBoards} : MainProps) {
+  const [currentTask, setCurrentTask] = useState<Task | null>(null);
+  
   const {
     board,
     fetchBoardById,
@@ -26,8 +32,24 @@ export default function Main({selectedBoardId, fetchBoards} : MainProps) {
     onRespondButtonClicked,
     onCancelRespondClicked,
     isAddBoardOpen,
-    setIsAddBoardOpen
+    setIsAddBoardOpen,
   } = useMain(fetchBoards)
+
+
+  const {
+    isTimerOpen,
+    setIsTimerOpen,
+    minutes,
+    setMinutes,
+    secondsElapsed,
+    secondsLeft,
+    isRunning,
+    start,
+    pause,
+    reset,
+    progress,
+    onCloseTimer
+  } = useTimer(15,selectedBoardId,currentTask,fetchBoardById);
 
   const [isSelected, setSelected] = useState(false)
 
@@ -51,22 +73,76 @@ export default function Main({selectedBoardId, fetchBoards} : MainProps) {
     const type = checkTypeOfBoard(board);
     switch (type) {
       case "LIST":
-        return <ListPage 
-                  selectedBoardId={selectedBoardId}
-                  board={board} 
-                  fetchBoardById={fetchBoardById}
-                  isSelected={isSelected} 
-                  isModalOpen={isModalOpen}
-                  setIsModalOpen={setIsModalOpen}
-                  isBoardEditOpen={isBoardEditOpen}
-                  setIsBoardEditOpen={setIsBoardEditOpen}
-                  isInviteUserOpen={isIviteUserOpen}
-                  setIsInviteUserOpen={setIsInviteUserOpen}
-                  isKickUserOpen={isKickUserOpen}
-                  setIsKickUserOpen={setIsKickUserOpen}
-                />;
+        return (
+          <>
+            <ListPage 
+              selectedBoardId={selectedBoardId}
+              board={board} 
+              fetchBoardById={fetchBoardById}
+              isSelected={isSelected} 
+              isModalOpen={isModalOpen}
+              setIsModalOpen={setIsModalOpen}
+              isBoardEditOpen={isBoardEditOpen}
+              setIsBoardEditOpen={setIsBoardEditOpen}
+              isInviteUserOpen={isIviteUserOpen}
+              setIsInviteUserOpen={setIsInviteUserOpen}
+              isKickUserOpen={isKickUserOpen}
+              setIsKickUserOpen={setIsKickUserOpen}
+              onTimerClicked={()=>setIsTimerOpen(true)}
+              currentTask={currentTask}
+              setCurrentTask={setCurrentTask}
+            />
+            {isTimerOpen && 
+              <TimerModal
+                minutes={minutes}
+                setMinutes={setMinutes}
+                secondsElapsed={secondsElapsed}
+                secondsLeft={secondsLeft}
+                isRunning={isRunning}
+                start={start}
+                pause={pause}
+                reset={reset}
+                progress={progress}
+                onClose={onCloseTimer}
+              />
+            }
+          </>);
       case "KANBAN":
-        // return <KanbanPage board={board} />;
+        return (
+          <>
+            <KanbanPage
+              selectedBoardId={selectedBoardId}
+              board={board} 
+              fetchBoardById={fetchBoardById}
+              isSelected={isSelected} 
+              isModalOpen={isModalOpen}
+              setIsModalOpen={setIsModalOpen}
+              isBoardEditOpen={isBoardEditOpen}
+              setIsBoardEditOpen={setIsBoardEditOpen}
+              isInviteUserOpen={isIviteUserOpen}
+              setIsInviteUserOpen={setIsInviteUserOpen}
+              isKickUserOpen={isKickUserOpen}
+              setIsKickUserOpen={setIsKickUserOpen}
+              onTimerClicked={()=>setIsTimerOpen(true)}
+              currentTask={currentTask}
+              setCurrentTask={setCurrentTask}
+            />
+            {isTimerOpen && 
+              <TimerModal
+                minutes={minutes}
+                setMinutes={setMinutes}
+                secondsElapsed={secondsElapsed}
+                secondsLeft={secondsLeft}
+                isRunning={isRunning}
+                start={start}
+                pause={pause}
+                reset={reset}
+                progress={progress}
+                onClose={()=>setIsTimerOpen(false)}
+              />
+            }
+          </>
+        );
       case "WEEK":
         // return <WeekPage board={board} />;
       default:

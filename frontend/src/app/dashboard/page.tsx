@@ -21,7 +21,10 @@ export default function Dashboard() {
   
   return (
     <div className="flex">
-      <Header isLoggedIn/>
+      <Header 
+        setSelectedBoardId={sidebarState.setSelectedBoardId}
+        isLoggedIn 
+      />
       <SideBar {...sidebarState}/>
       <Main 
         selectedBoardId={sidebarState.selectedBoardId}

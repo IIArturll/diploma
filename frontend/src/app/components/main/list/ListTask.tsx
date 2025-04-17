@@ -16,9 +16,10 @@ type ListTaskProps = {
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   onExecutorClick: (task: Task) => void;
   onRemoveClicked: (task: Task) => void;
+  onTimerClicked: () => void;
 };
 
-const ListTask = ({items,taskMap,handleDragEnd,setCurrentTask, setIsModalOpen, onExecutorClick, onRemoveClicked}: ListTaskProps) => {
+const ListTask = ({items,taskMap,handleDragEnd,setCurrentTask, setIsModalOpen, onExecutorClick, onRemoveClicked, onTimerClicked}: ListTaskProps) => {
   return (
     <div className="mt-10">
       <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
@@ -33,6 +34,7 @@ const ListTask = ({items,taskMap,handleDragEnd,setCurrentTask, setIsModalOpen, o
                   setIsModalOpen={setIsModalOpen}
                   onExecutorClick={onExecutorClick}
                   onRemoveClicked={onRemoveClicked}
+                  onTimerClicked={onTimerClicked}
                 />
               ))}
             </ul>

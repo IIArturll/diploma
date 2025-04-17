@@ -115,10 +115,10 @@ export function useSidebar() {
   };
 
   const handleBoardClicked= async(id: string) => {
-    if(!selectedBoardId) {
+    if (selectedBoardId !== id) {
       setSelectedBoardId(id);
     } else {
-      setSelectedBoardId("")
+      setSelectedBoardId("");
     }
   }
 
@@ -133,6 +133,7 @@ export function useSidebar() {
     handleDeleteBoard,
     handleEditBoard,
     createBoard,
-    fetchBoards
+    fetchBoards,
+    setSelectedBoardId
   };
 }

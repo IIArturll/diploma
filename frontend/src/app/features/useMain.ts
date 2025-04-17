@@ -13,6 +13,7 @@ export function useMain(fetchBoards:()=>void) {
   const[invitationCode, setInvitationCode] = useState("")
   const[isAddBoardOpen,setIsAddBoardOpen] = useState(false)
 
+
   const fetchBoardById = async (selectedBoardId: string) => { 
     if(!selectedBoardId) return;
     const accessToken = localStorage.getItem("accessToken");
@@ -110,6 +111,6 @@ export function useMain(fetchBoards:()=>void) {
     onRespondButtonClicked,
     onCancelRespondClicked,
     isAddBoardOpen,
-    setIsAddBoardOpen
+    setIsAddBoardOpen,
   }
 }

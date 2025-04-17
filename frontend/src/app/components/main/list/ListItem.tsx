@@ -23,24 +23,48 @@ const convertToLocalDateTime = (utcTimestamp: string | null) => {
   );
 };
 
+const formatTime = (seconds: number) => {
+  const d = Math.floor(seconds / (60 * 60 * 24));
+  const h = Math.floor((seconds % (60 * 60 * 24)) / 3600);
+  const m = Math.floor((seconds % 3600) / 60);
+  const s = seconds % 60;
+
+  if (seconds < 60) {
+    return `${s} sec`;
+  } else if (seconds < 3600) {
+    return `${m}:${s.toString().padStart(2, '0')} min`;
+  } else if (seconds < 86400) {
+    return `${h}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')} hour`;
+  } else {
+    return `${d}d ${h}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+  }
+}
+
 const ListItem = (
 { task, 
   setCurrentTask, 
   setIsModalOpen, 
   onExecutorClick, 
   onRemoveClicked,
+  onTimerClicked,
 }: { 
   task: Task, 
   setCurrentTask: (currenTask: Task) => void, 
   setIsModalOpen: (open: boolean) => void, 
   onExecutorClick: (task: Task) => void, 
   onRemoveClicked: (task: Task)=>void,
+  onTimerClicked: ()=> void,
 }) => {
 
   const handleDoubleClick = () => {
     setCurrentTask(task);
     setIsModalOpen(true);
   };
+
+  const timerClick = () => {
+    setCurrentTask(task)
+    onTimerClicked()
+  }
 
   const [currentUserEmail, setCurrentUserEmail] = useState<string | null>(null);
 
@@ -125,10 +149,10 @@ const ListItem = (
             {convertToLocalDateTime(task.endedAt)}
           </h1>
         </div>
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-1 items-center">
           <label className="block text-sm select-none">Execute time</label>
-          <h1  className="select-none">{task.executeTime}</h1>
-          <Image className="select-none" src={Play} alt="Play" width={20} height={20} />
+            <h1  className="select-none">{task.executeTime && formatTime(task.executeTime)}</h1>
+            <Image className="select-none" src={Play} alt="Play" width={20} height={20} onClick={timerClick} />
         </div>
         <div className="flex flex-col gap-1 w-32 break-words whitespace-normal">
           <label className="block text-sm select-none">Tags</label>

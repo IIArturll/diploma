@@ -5,12 +5,14 @@ import User from "../../user.png"
 import AuthModals from "./AuthModals";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../features/useAuth"
+import { Dispatch, SetStateAction } from "react";
 
 type HeaderProps = {
   isLoggedIn: boolean;
+  setSelectedBoardId: Dispatch<SetStateAction<string>>
 };
 
-export default function Header({ isLoggedIn }: HeaderProps) {
+export default function Header({ isLoggedIn,setSelectedBoardId }: HeaderProps) {
   const router = useRouter();
 
   const handleUserClick = () => {
@@ -18,6 +20,7 @@ export default function Header({ isLoggedIn }: HeaderProps) {
   };
   
   const handleLogoClick = () => {
+    setSelectedBoardId("")
     router.push("/dashboard");
   };
 
