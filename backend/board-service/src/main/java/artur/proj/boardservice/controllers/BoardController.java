@@ -71,6 +71,24 @@ public class BoardController {
         service.delete(id);
     }
 
+    @PutMapping("/{boardId}/update/positions")
+    @ResponseStatus(HttpStatus.OK)
+    public void updatePositions(@PathVariable("boardId") UUID boardId, @RequestBody List<TaskUpdatePositionDTO> list){
+        service.updatePositions(boardId,list);
+    }
+
+    @PutMapping("/{boardId}/set/executor/{taskId}")
+    @ResponseStatus(HttpStatus.OK)
+    public void becomeExecutor(@PathVariable("boardId") UUID boardId, @PathVariable("taskId") UUID taskId) {
+        service.becomeExecutor(boardId,taskId);
+    }
+
+    @PutMapping("/{boardId}/delete/executor/{taskId}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteExecutor(@PathVariable("boardId") UUID boardId, @PathVariable("taskId") UUID taskId) {
+        service.deleteExecutor(boardId,taskId);
+    }
+
     @GetMapping("/tags")
     @ResponseStatus(HttpStatus.OK)
     public List<TagDTO> getTags() {
@@ -101,4 +119,5 @@ public class BoardController {
                       @RequestParam("email") String email) {
         accessService.kickUser(board, email);
     }
+
 }

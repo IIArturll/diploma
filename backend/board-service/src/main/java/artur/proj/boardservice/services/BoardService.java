@@ -1,11 +1,6 @@
 package artur.proj.boardservice.services;
 
-import artur.proj.boardservice.core.dtos.BoardCreateDTO;
-import artur.proj.boardservice.core.dtos.BoardDTO;
-import artur.proj.boardservice.core.dtos.BoardNameDTO;
-import artur.proj.boardservice.core.dtos.TaskDTO;
-import jakarta.transaction.Transactional;
-import org.springframework.stereotype.Service;
+import artur.proj.boardservice.core.dtos.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -25,4 +20,10 @@ public interface BoardService {
     void removeTask(UUID boardId, UUID taskId);
 
     void delete(UUID id);
+
+    void updatePositions(UUID boardId, List<TaskUpdatePositionDTO> list);
+
+    void becomeExecutor(UUID boardId,UUID taskId);
+
+    void deleteExecutor(UUID boardId, UUID taskId);
 }

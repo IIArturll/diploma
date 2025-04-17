@@ -20,10 +20,8 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 
@@ -98,7 +96,6 @@ public class BoardServiceImpl implements BoardService {
     private void updateTaskStatus(TaskEntity taskEntity, TaskStatus status) {
         taskEntity.setStatus(status);
         Instant now = Instant.now();
-
         switch (status) {
             case PENDING -> {
                 taskEntity.setStartedAt(null);
@@ -128,6 +125,7 @@ public class BoardServiceImpl implements BoardService {
         getAuthorizedUser().getBoards().stream().filter(b->b.getId().equals(boardId)).findFirst()
                 .orElseThrow(UnauthorizedAccessException::new);
         TaskEntity entity = mapper.toEntity(dto);
+        updateTaskStatus(entity, dto.status());
         entity.setOwner(getAuthorizedUser());
         List<TagEntity> tagEntityList = entity.getTags().stream()
                 .map(tagEntity -> tagService.getByTag(tagEntity.getTag())).collect(Collectors.toList());
@@ -157,6 +155,52 @@ public class BoardServiceImpl implements BoardService {
             throw new UnauthorizedAccessException();
         }
         boardRepository.deleteById(id);
+    }
+
+    @Override
+    public void updatePositions(UUID boardId, List<TaskUpdatePositionDTO> list) {
+        BoardEntity boardEntity = boardRepository.findById(boardId).orElseThrow(
+                () -> new BoardNotFoundException(boardId));
+        UserEntity authorizedUser = getAuthorizedUser();
+        authorizedUser.getBoards().stream().filter(b->b.getId().equals(boardId)).findFirst()
+                .orElseThrow(UnauthorizedAccessException::new);
+        Set<TaskEntity> tasks = boardEntity.getTasks();
+        Map<UUID, TaskEntity> taskMap = boardEntity.getTasks().stream()
+                .collect(Collectors.toMap(TaskEntity::getId, Function.identity()));
+        for (TaskUpdatePositionDTO dto : list) {
+            TaskEntity task=taskMap.get(dto.id());
+            if(task != null) {
+                task.setPositionY(dto.positionY());
+                updateTaskStatus(task, dto.status());
+            }
+        }
+        boardRepository.save(boardEntity);
+    }
+
+    @Override
+    public void becomeExecutor(UUID boardId, UUID taskId) {
+        BoardEntity boardEntity = boardRepository.findById(boardId).orElseThrow(
+                () -> new BoardNotFoundException(boardId));
+        UserEntity authorizedUser = getAuthorizedUser();
+        authorizedUser.getBoards().stream().filter(b->b.getId().equals(boardId)).findFirst()
+                .orElseThrow(UnauthorizedAccessException::new);
+        boardEntity.getTasks().stream().filter(b -> b.getId().equals(taskId)).findFirst()
+                .orElseThrow(() -> new TaskNotFoundException(taskId))
+                .setExecutor(authorizedUser);
+        boardRepository.save(boardEntity);
+    }
+
+    @Override
+    public void deleteExecutor(UUID boardId, UUID taskId) {
+        BoardEntity boardEntity = boardRepository.findById(boardId).orElseThrow(
+                () -> new BoardNotFoundException(boardId));
+        UserEntity authorizedUser = getAuthorizedUser();
+        authorizedUser.getBoards().stream().filter(b->b.getId().equals(boardId)).findFirst()
+                .orElseThrow(UnauthorizedAccessException::new);
+        boardEntity.getTasks().stream().filter(b -> b.getId().equals(taskId)).findFirst()
+                .orElseThrow(() -> new TaskNotFoundException(taskId))
+                .setExecutor(null);
+        boardRepository.save(boardEntity);
     }
 
     private UserEntity getAuthorizedUser() {

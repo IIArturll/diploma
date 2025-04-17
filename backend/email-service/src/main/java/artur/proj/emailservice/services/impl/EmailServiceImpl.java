@@ -71,8 +71,8 @@ public class EmailServiceImpl implements EmailService {
         simpleMailMessage.setFrom(emailProperties.getFromAddress());
         simpleMailMessage.setTo(recipient);
         simpleMailMessage.setSubject(emailProperties.getSubjectInvitation());
-        simpleMailMessage.setText(String.format("Your was invite to board: %s\n To respond, follow the link: \n192.168.100.3:8080/api/board/invite/%s",
-                board, code));
+        simpleMailMessage.setText(String.format("You have been invited to the workspace: %s\n " +
+                "Your invite code is: %s", board, code));
         emailSender.send(simpleMailMessage);
     }
 
