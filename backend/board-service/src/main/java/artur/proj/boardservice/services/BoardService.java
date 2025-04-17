@@ -26,4 +26,6 @@ public interface BoardService {
     void becomeExecutor(UUID boardId,UUID taskId);
 
     void deleteExecutor(UUID boardId, UUID taskId);
+
+    void addSecondsToExecuteTimeOfTask(UUID boardId, UUID taskId, Integer seconds);
 }

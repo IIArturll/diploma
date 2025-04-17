@@ -203,6 +203,20 @@ public class BoardServiceImpl implements BoardService {
         boardRepository.save(boardEntity);
     }
 
+    @Override
+    public void addSecondsToExecuteTimeOfTask(UUID boardId, UUID taskId, Integer seconds) {
+        BoardEntity boardEntity = boardRepository.findById(boardId).orElseThrow(
+                () -> new BoardNotFoundException(boardId));
+        UserEntity authorizedUser = getAuthorizedUser();
+        authorizedUser.getBoards().stream().filter(b->b.getId().equals(boardId)).findFirst()
+                .orElseThrow(UnauthorizedAccessException::new);
+        TaskEntity taskEntity = boardEntity.getTasks().stream().filter(b -> b.getId().equals(taskId)).findFirst()
+                .orElseThrow(() -> new TaskNotFoundException(taskId));
+        Long currentExecuteTime = taskEntity.getExecuteTime();
+        taskEntity.setExecuteTime((currentExecuteTime != null ? currentExecuteTime : 0) + seconds);
+        boardRepository.save(boardEntity);
+    }
+
     private UserEntity getAuthorizedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated()) {

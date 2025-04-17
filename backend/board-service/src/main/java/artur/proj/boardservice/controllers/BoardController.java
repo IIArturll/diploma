@@ -120,4 +120,11 @@ public class BoardController {
         accessService.kickUser(board, email);
     }
 
+    @PutMapping("/add/execute/time")
+    @ResponseStatus(HttpStatus.OK)
+    public void addSecondsToExecuteTimeOfTask(@RequestParam("board") UUID board,
+                                              @RequestParam("task") UUID task,
+                                              @RequestParam("seconds") Integer seconds) {
+        service.addSecondsToExecuteTimeOfTask(board, task, seconds);
+    }
 }
