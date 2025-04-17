@@ -5,8 +5,7 @@ import {useRouter} from 'next/navigation'
 export function useSignIn(
   onClose: () => void,
   onOpenSignUp: () => void,
-  onOpenForgotPassword: () => void,
-  isLogined: boolean
+  onOpenForgotPassword: () => void
 ) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

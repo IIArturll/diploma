@@ -9,7 +9,6 @@ export function useSidebar() {
   const [selectedBoardId,setSelectedBoardId] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const { boards, setBoards, fetchBoards } = useBoards(searchTerm);
-  const [fullBoard, setFullBoard] = useState<Board|null>(null)
 
   const toggleSidebar = () => {
     setIsCollapsed(!isCollapsed);
@@ -118,32 +117,6 @@ export function useSidebar() {
   const handleBoardClicked= async(id: string) => {
     if(!selectedBoardId) {
       setSelectedBoardId(id);
-      const accessToken = localStorage.getItem("accessToken");
-    if (!accessToken) return;  
-    try {
-      const response = await axios.get(`http://localhost:8080/api/board/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-        },
-      });
-      const data: Board = response.data;
-      console.log(data);
-      setFullBoard(data);   
-    } catch (error: any) {
-      if (axios.isAxiosError(error)) {
-        if (error.response) {
-          console.error("Server responded with status:", error.response.status);
-          console.error("Response data:", error.response.data);
-        } else if (error.request) {
-          console.error("No response received from the server");
-        } else {
-          console.error("Error setting up the request:", error.message);
-        }
-      } else {
-        console.error("An error occurred:", error);
-      }
-    }
     } else {
       setSelectedBoardId("")
     }
@@ -160,5 +133,6 @@ export function useSidebar() {
     handleDeleteBoard,
     handleEditBoard,
     createBoard,
+    fetchBoards
   };
 }

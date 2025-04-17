@@ -3,10 +3,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { BoardCreate } from "../types/BoardCreate";
 
-const CACHE_KEY = "cachedBoards";
-const CACHE_TIMESTAMP_KEY = "cachedBoardsTimestamp";
-const CACHE_TTL = 5 * 60 * 1000; 
-
 const filterBoards = (boards: BoardCreate[], searchTerm: string): BoardCreate[] => {
   return boards.filter((board) =>
     board.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -34,8 +30,6 @@ export function useBoards(searchTerm: string = "") {
 
       const data: BoardCreate[] = response.data;
       setBoards(data);
-      localStorage.setItem(CACHE_KEY, JSON.stringify(data));
-      localStorage.setItem(CACHE_TIMESTAMP_KEY, Date.now().toString());
     } catch (error: any) {
       if (axios.isAxiosError(error)) {
         if (error.response) {
@@ -53,20 +47,11 @@ export function useBoards(searchTerm: string = "") {
   };
 
   useEffect(() => {
-    const cached = localStorage.getItem(CACHE_KEY);
-    const timestamp = localStorage.getItem(CACHE_TIMESTAMP_KEY);
-    const isCacheValid = timestamp && (Date.now() - parseInt(timestamp)) < CACHE_TTL;
-
-    if (cached && isCacheValid) {
-      const data: BoardCreate[] = JSON.parse(cached);
-      setBoards(data);
-    } else {
-      fetchBoards();
-    }
+    fetchBoards(); 
 
     const interval = setInterval(() => {
       fetchBoards();
-    }, CACHE_TTL);
+    }, 60000);
 
     return () => clearInterval(interval);
   }, []);
@@ -78,6 +63,6 @@ export function useBoards(searchTerm: string = "") {
   return {
     boards: filteredBoards,
     setBoards,
-    fetchBoards, 
+    fetchBoards,
   };
 }

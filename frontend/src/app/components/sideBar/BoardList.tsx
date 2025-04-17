@@ -22,8 +22,9 @@ const BoardList = ({ boards, selectedBoardId, handleBoardClicked, onDeleteBoard,
           return (
           <li 
             key={Board.id} 
-            className={`relative p-2 rounded mb-2 text-white text-center group ${isSelected ? "bg-blue-500" : "bg-gray-700"} `}
-            onClick={()=>handleBoardClicked(Board.id)}
+            className={`relative p-2 rounded mb-2 text-white text-center group break-words whitespace-normal select-none
+               ${isSelected ? "bg-blue-500" : "bg-gray-700"} `}
+            onDoubleClick={()=>handleBoardClicked(Board.id)}
             >
             
             {Board.name}

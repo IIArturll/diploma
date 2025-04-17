@@ -6,21 +6,35 @@ import SearchInput from "./SearchInput";
 import BoardCreateButton from "./BoardCreateButton";
 import BoardList from "./BoardList";
 import { useSidebar } from "../../features/useSidebar";  
+import { BoardCreate } from "@/app/types/BoardCreate";
+import { Board } from "@/app/types/Board";
 
-export default function Sidebar() {
-  const {
-    isCollapsed,
-    selectedBoardId,
-    handleBoardClicked,
-    toggleSidebar,
-    searchTerm,
-    handleSearch,
-    boards,
-    handleDeleteBoard,
-    handleEditBoard,
-    createBoard,
-  } = useSidebar(); 
+type SideBarProps = {
+  isCollapsed: boolean;
+  selectedBoardId: string;
+  handleBoardClicked: (id: string) => void;
+  toggleSidebar: () => void;
+  searchTerm: string;
+  handleSearch: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  boards: BoardCreate[];
+  handleDeleteBoard: (id: string) => void;
+  handleEditBoard: (id: string) => void;
+  createBoard: (newBoard: BoardCreate) => void;
+}
 
+export default function Sidebar({
+  isCollapsed,
+  selectedBoardId,
+  handleBoardClicked,
+  toggleSidebar,
+  searchTerm,
+  handleSearch,
+  boards,
+  handleDeleteBoard,
+  handleEditBoard,
+  createBoard,
+}:SideBarProps) {
+  
   return (
     <aside className={`h-[calc(100vh-72px)] mt-18 bg-gray-800 p-4 transition-all duration-300 ${isCollapsed ? "w-16" : "w-1/5"}`}>
 

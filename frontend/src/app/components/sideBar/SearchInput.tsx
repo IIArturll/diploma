@@ -9,7 +9,7 @@ type SearchInputProps = {
       placeholder="search..."
       value={searchTerm}
       onChange={onSearchChange}
-      className="p-2 w-60 bg-white rounded text-black"
+      className="p-2 w-48 bg-white rounded text-black"
     />
   );
   
