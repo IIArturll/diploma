@@ -25,28 +25,30 @@ export function KanbanColumn(
     
   
   return (
-    <div  ref={setNodeRef} className="w-full md:w-1/3 p-2 bg-gray-500 rounded-xl shadow-sm overflow-y-auto h-[calc(95vh-150px)] scrollbar-hidden">
+    <div  ref={setNodeRef} className="w-full md:w-1/3 p-2 bg-gray-500 rounded-xl shadow-sm ">
       <h2 className="text-xl font-semibold text-center mb-4">{title}</h2>
-      <SortableContext
-        items={tasks.map(task => task.id)}
-        strategy={verticalListSortingStrategy}
-      >
-        <div className="flex flex-col gap-2">
-          {tasks.map((task) => (
-            <KanbanItem
-              key={task.id}
-              task={task}
-              setCurrentTask={setCurrentTask} 
-              setIsModalOpen={setIsModalOpen}
-              onExecutorClick={onExecutorClick}
-              onRemoveClicked={onRemoveClicked}
-              onTimerClicked={onTimerClicked}
-              expandedTaskId={expandedTaskId}
-              setExpandedTaskId={setExpandedTaskId}
-            />
-          ))}
-        </div>
-      </SortableContext>
+      <div className="overflow-y-auto h-[calc(95vh-150px)] scrollbar-hidden">
+        <SortableContext
+          items={tasks.map(task => task.id)}
+          strategy={verticalListSortingStrategy}
+        >
+          <div className="flex flex-col gap-2">
+            {tasks.map((task) => (
+              <KanbanItem
+                key={task.id}
+                task={task}
+                setCurrentTask={setCurrentTask} 
+                setIsModalOpen={setIsModalOpen}
+                onExecutorClick={onExecutorClick}
+                onRemoveClicked={onRemoveClicked}
+                onTimerClicked={onTimerClicked}
+                expandedTaskId={expandedTaskId}
+                setExpandedTaskId={setExpandedTaskId}
+              />
+            ))}
+          </div>
+        </SortableContext>
+      </div>
     </div>
   );
 }

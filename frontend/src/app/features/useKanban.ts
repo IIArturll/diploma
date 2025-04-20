@@ -19,11 +19,6 @@ export function useKanban({
   const [activeTask, setActiveTask] = useState<Task | null>(null);
   const sensors = useSensors(useSensor(PointerSensor));
 
-  const handleDragStart = (event: { active: { id: string } }) => {
-    const task = board.tasks.find((t) => t.id === event.active.id);
-    if (task) setActiveTask(task);
-  };
-
   const handleDragEnd = async (event: DragEndEvent) => {
     const { active, over } = event;
     setActiveTask(null);
@@ -101,7 +96,6 @@ export function useKanban({
       ];
     }
 
-    // 👉 Обновляем board.tasks на фронте
     const newTasks = board.tasks.map((task) => {
       const changed = changedTasks.find((t) => t.id === task.id);
       return changed ? { ...task, ...changed } : task;
@@ -144,7 +138,6 @@ export function useKanban({
     sensors,
     activeTask,
     setActiveTask,
-    handleDragStart,
     handleDragEnd,
   };
 }

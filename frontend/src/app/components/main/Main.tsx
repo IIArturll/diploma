@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ListPage from "@/app/components/main/list/ListPage";
 import KanbanPage from "@/app/components/main/kanban/KanbanPage";
+import WeekPage from "@/app/components/main/week/WeekPage";
 import RespondOnInviteModal from "@/app/components/main/RespondOnInviteModal";
 import { TimerModal } from "./TimerModal";
 
@@ -151,8 +152,33 @@ export default function Main({ selectedBoardId, fetchBoards}: MainProps) {
           </>
         );
       case "WEEK":
-        // return <WeekPage board={board} />;
-        return null;
+        return (
+          <>
+            <WeekPage
+              selectedBoardId={selectedBoardId}
+              board={board}
+              setBoard={setBoard}
+              fetchBoardById={fetchBoardById}
+              isSelected={isSelected}
+              isModalOpen={isModalOpen}
+              setIsModalOpen={setIsModalOpen}
+              isBoardEditOpen={isBoardEditOpen}
+              setIsBoardEditOpen={setIsBoardEditOpen}
+              isInviteUserOpen={isIviteUserOpen}
+              setIsInviteUserOpen={setIsInviteUserOpen}
+              isKickUserOpen={isKickUserOpen}
+              setIsKickUserOpen={setIsKickUserOpen}
+              onTimerClicked={() => setIsTimerOpen(true)}
+              currentTask={currentTask}
+              setCurrentTask={setCurrentTask}
+              onExecutorClick={onExecutorClick}
+              onRemoveClicked={onRemoveClicked}
+              expandedTaskId={expandedTaskId}
+              setExpandedTaskId={setExpandedTaskId}
+            />
+            {Timer}
+          </>
+        );
       default:
         return <div className="text-center text-red-500">Unknown board type</div>;
     }
