@@ -56,7 +56,7 @@ export default function KanbanBoard(
         if (task) setActiveTask(task);
       }}
     >
-      <div className="ml-4 mr-4 flex gap-9 p-4">
+      <div className="ml-4 mr-4 flex gap-3 p-4">
         {STATUSES.map((status) => (
           <KanbanColumn
             title={status}

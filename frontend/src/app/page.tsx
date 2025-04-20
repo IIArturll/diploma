@@ -19,6 +19,7 @@ export default function WelcomePage() {
     <>
       <Header
         isLoggedIn={isLoggedIn}
+        setSelectedBoardId={()=>{}}
       />
       <div>
         <h1 className="mt-40 text-center text-4xl">Welcome to multi-format task planning system with multi-user mode support</h1>

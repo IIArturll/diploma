@@ -27,7 +27,7 @@ export function KanbanColumn(
   return (
     <div  ref={setNodeRef} className="w-full md:w-1/3 p-2 bg-gray-500 rounded-xl shadow-sm ">
       <h2 className="text-xl font-semibold text-center mb-4">{title}</h2>
-      <div className="overflow-y-auto h-[calc(95vh-150px)] scrollbar-hidden">
+      <div className="overflow-y-auto h-[calc(90vh-150px)] scrollbar-hidden">
         <SortableContext
           items={tasks.map(task => task.id)}
           strategy={verticalListSortingStrategy}

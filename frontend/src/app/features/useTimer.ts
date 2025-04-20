@@ -2,7 +2,8 @@ import { useEffect, useState, useRef } from "react";
 import { Task } from "../types/Task";
 import axios from "axios";
 
-export function useTimer(initialMinutes: number = 1, selectedBoardId: string, currentTask: Task|null, fetchBoardById:(boardId:string)=>void) {
+
+export function useTimer(initialMinutes: number = 1, selectedBoardId: string, currentTask: Task | null, fetchBoardById: (boardId: string) => void) {
   const [minutes, setMinutes] = useState(initialMinutes);
   const [secondsElapsed, setSecondsElapsed] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
@@ -14,17 +15,24 @@ export function useTimer(initialMinutes: number = 1, selectedBoardId: string, cu
   const progress = Math.min(1, secondsElapsed / totalSeconds);
 
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const soundRef = useRef<HTMLAudioElement | null>(null);
 
   const start = () => setIsRunning(true);
   
   const pause = () => {
     setIsRunning(false);
   }
-  
+
   const reset = () => {
     setTotalSecondsLeft(prev => prev + secondsElapsed);
     setSecondsElapsed(0);
     setIsRunning(false);
+  };
+
+  const playSound = () => {
+    if (soundRef.current) {
+      soundRef.current.play();
+    }
   };
 
   const onCloseTimer = async () => {
@@ -37,11 +45,11 @@ export function useTimer(initialMinutes: number = 1, selectedBoardId: string, cu
       setSecondsElapsed(0);
       return;
     }
-  
+
     if (!selectedBoardId || !currentTask) return;
     const accessToken = localStorage.getItem("accessToken");
     if (!accessToken) return;
-  
+
     try {
       await axios.put(`http://localhost:8080/api/board/add/execute/time`,
         null,
@@ -71,7 +79,7 @@ export function useTimer(initialMinutes: number = 1, selectedBoardId: string, cu
         console.error("An error occurred:", error);
       }
     }
-  
+
     setIsTimerOpen(false);
     setIsRunning(false);
     setSecondsElapsed(0);
@@ -85,12 +93,22 @@ export function useTimer(initialMinutes: number = 1, selectedBoardId: string, cu
       }, 1000);
     }
 
+    if (isRunning && secondsElapsed >= totalSeconds) {
+      setIsRunning(false);
+      playSound();
+    }
+    
     return () => {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
       }
     };
   }, [isRunning, secondsElapsed, totalSeconds]);
+
+  // Инициализация звука
+  useEffect(() => {
+    soundRef.current = new Audio("https://www.soundjay.com/buttons/sounds/beep-06.mp3");
+  }, []);
 
   return {
     minutes,
