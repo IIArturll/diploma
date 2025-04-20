@@ -7,9 +7,11 @@ import EditBaseInformationModal from "../EditBaseInformationModal";
 import InviteModal from "../InviteModal";
 import KickModal from "../KickModal";
 import CreateUpdateTaskModal from "../CreateUpdateTaskModal";
+import KanbanBoard from "./KanbanBoard";
 
 type KanbanPageProps = {
   board: Board;
+  setBoard: (board: Board)=>void,
   selectedBoardId: string;
   fetchBoardById: (selectedBoardId:string) => void;
   isSelected: boolean;
@@ -24,10 +26,16 @@ type KanbanPageProps = {
   onTimerClicked: ()=>void;
   currentTask: Task | null,
   setCurrentTask: React.Dispatch<React.SetStateAction<Task | null>>
+  onExecutorClick: (task: Task)=>void
+  onRemoveClicked: (task: Task)=>void
+  expandedTaskId: string | null;
+  setExpandedTaskId: React.Dispatch<React.SetStateAction<string | null>>
 };
+
 export default function KanbanPage(
   { 
     board, 
+    setBoard,
     selectedBoardId, 
     fetchBoardById, 
     isSelected,  
@@ -40,13 +48,14 @@ export default function KanbanPage(
     isKickUserOpen,
     setIsKickUserOpen,
     currentTask,
-    setCurrentTask
+    setCurrentTask,
+    onExecutorClick,
+    onRemoveClicked,
+    onTimerClicked,
+    expandedTaskId,
+    setExpandedTaskId
   }: KanbanPageProps
 ) {
-
-  const maxPositionY = board.tasks.length > 0
-    ? Math.max(...board.tasks.map((task) => task.positionY ?? 0))
-    : 0; //rewrite
 
   const {
     onCreateTaskButtonClicked,
@@ -60,7 +69,7 @@ export default function KanbanPage(
     onDelete,
     createTask,
     updateTask,
-  } = useCreaeUpdateTaskModal(setIsModalOpen, setCurrentTask, selectedBoardId, maxPositionY, currentTask);
+  } = useCreaeUpdateTaskModal(setIsModalOpen, setCurrentTask, selectedBoardId, currentTask,board);
   
   const {
     boardName,
@@ -77,8 +86,6 @@ export default function KanbanPage(
     onKickButtonClicked,
     onCancelClicked,
     onDeleteClicled,
-    isMenuOpen,
-    onMenuSettingsClick
   } = useBoardSettings(selectedBoardId,board,setIsBoardEditOpen,setIsInviteUserOpen,setIsKickUserOpen,fetchBoardById);
   
   if(!isSelected) return null;
@@ -160,7 +167,21 @@ export default function KanbanPage(
       )}
   
       {board && (  
-      <></>
+        <>
+          <KanbanBoard 
+            board={board} 
+            setBoard={setBoard} 
+            fetchBoardById={fetchBoardById} 
+            selectedBoardId={selectedBoardId} 
+            setCurrentTask={setCurrentTask}
+            setIsModalOpen={setIsModalOpen}
+            onExecutorClick={onExecutorClick}
+            onRemoveClicked={onRemoveClicked}
+            onTimerClicked={onTimerClicked}
+            expandedTaskId={expandedTaskId}
+            setExpandedTaskId={setExpandedTaskId}
+          />
+        </>
       )}
       
       </div>

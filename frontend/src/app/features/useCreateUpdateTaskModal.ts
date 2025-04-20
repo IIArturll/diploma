@@ -9,31 +9,54 @@ export function useCreaeUpdateTaskModal(
   setIsModalOpen:React.Dispatch<React.SetStateAction<boolean>>,
   setCurrentTask:React.Dispatch<React.SetStateAction<Task|null>>,
   selectedBoardId:string,
-  maxPositionY: number,
-  currentTask: Task | null
+  currentTask: Task | null,
+  board: Board
 ) {
     const [description, setDescription] = useState("")
     const [status, setStatus] = useState<"PENDING" | "RUNNING" | "COMPLETED">("PENDING")
     const [tags, setTags] = useState<Tag[]>([])
     
+    const maxPositionY = board.tasks.length > 0
+      ? Math.max(...board.tasks.map((task) => task.positionY ?? 0))
+      : 0;
+    const maxCompletedPosition = board.tasks
+        .filter((task) => task.status === "COMPLETED")
+        .reduce((max, task) => Math.max(max, task.positionY ?? 0), 0);
+    
+      const maxRunningPosition = board.tasks
+        .filter((task) => task.status === "RUNNING")
+        .reduce((max, task) => Math.max(max, task.positionY ?? 0), 0);
+    
+      const maxPendingPosition = board.tasks
+        .filter((task) => task.status === "PENDING")
+        .reduce((max, task) => Math.max(max, task.positionY ?? 0), 0);
+    
     const createTask = async () => {
-      console.log(
-        {
-          description,
-          status,
-          tags
-        }
-      );
       if(!selectedBoardId) return;
       const accessToken = localStorage.getItem("accessToken");
       if (!accessToken) return;  
       try {
-        console.log({selectedBoardId})
+        let positionY = 0;
+        if (board.type === "KANBAN") {
+          switch (status) {
+            case "COMPLETED":
+              positionY = maxCompletedPosition + 1;
+              break;
+            case "RUNNING":
+              positionY = maxRunningPosition + 1;
+              break;
+            case "PENDING":
+              positionY = maxPendingPosition + 1;
+              break;
+          }
+        } else {
+          positionY = maxPositionY + 1;
+        }
         const response = await axios.put(`http://localhost:8080/api/board/${selectedBoardId}/add`,
           {
             description,
             status,
-            positionY: maxPositionY+1,
+            positionY: positionY,
             tags
           }
           ,{

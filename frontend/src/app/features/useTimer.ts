@@ -30,7 +30,7 @@ export function useTimer(initialMinutes: number = 1, selectedBoardId: string, cu
   const onCloseTimer = async () => {
     const finalTotalSeconds = totalSecondsLeft + secondsElapsed;
     console.log("Final totalSeconds:", finalTotalSeconds);
-  
+    
     if (finalTotalSeconds === 0) {
       setIsRunning(false);
       setIsTimerOpen(false);

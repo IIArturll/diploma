@@ -26,6 +26,8 @@ type ListProps = {
   onTimerClicked: ()=>void;
   currentTask: Task | null,
   setCurrentTask: React.Dispatch<React.SetStateAction<Task | null>>
+  onExecutorClick: (task: Task)=>void
+  onRemoveClicked: (task: Task)=>void
 };
 
 export default function ListPage({ 
@@ -43,13 +45,10 @@ export default function ListPage({
   setIsKickUserOpen,
   onTimerClicked,
   currentTask,
-  setCurrentTask
+  setCurrentTask,
+  onExecutorClick,
+  onRemoveClicked,
 }: ListProps) {
-
-  
-  const maxPositionY = board.tasks.length > 0
-  ? Math.max(...board.tasks.map((task) => task.positionY ?? 0))
-  : 0;
 
   const {
     onCreateTaskButtonClicked,
@@ -63,14 +62,13 @@ export default function ListPage({
     onDelete,
     createTask,
     updateTask,
-  } = useCreaeUpdateTaskModal(setIsModalOpen, setCurrentTask, selectedBoardId, maxPositionY, currentTask);
+  } = useCreaeUpdateTaskModal(setIsModalOpen, setCurrentTask, selectedBoardId, currentTask,board);
 
   const { 
     items, 
     taskMap,
     handleDragEnd,
-    onExecutorClick,
-    onRemoveClicked,
+    
   } = useList(board.tasks,currentTask,selectedBoardId, setCurrentTask, fetchBoardById);
 
   const {
@@ -171,17 +169,21 @@ export default function ListPage({
         board={board}
       />
 
-      {board ? 
-        <ListTask 
-          items={items}
-          taskMap={taskMap}
-          handleDragEnd={handleDragEnd}
-          setCurrentTask={setCurrentTask}
-          setIsModalOpen={setIsModalOpen}
-          onExecutorClick={onExecutorClick}
-          onRemoveClicked={onRemoveClicked}
-          onTimerClicked={onTimerClicked}
-        /> : null}
+      {board && ( 
+        <>
+          <ListTask 
+            items={items}
+            taskMap={taskMap}
+            handleDragEnd={handleDragEnd}
+            setCurrentTask={setCurrentTask}
+            setIsModalOpen={setIsModalOpen}
+            onExecutorClick={onExecutorClick}
+            onRemoveClicked={onRemoveClicked}
+            onTimerClicked={onTimerClicked}
+          />
+        </>
+      )}
+
     </div>
   );
 }

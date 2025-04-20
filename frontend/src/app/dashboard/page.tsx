@@ -1,5 +1,5 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../features/useAuth";
 import Header from "../components/header/Header"
@@ -12,7 +12,7 @@ export default function Dashboard() {
   const { isLoggedIn, isLoading } = useAuth();
   const router = useRouter();
   const sidebarState = useSidebar(); 
-
+  
   useEffect(() => {
     if(!isLoggedIn && !isLoading){
       router.push("/")

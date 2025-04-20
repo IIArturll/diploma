@@ -75,76 +75,10 @@ export const useList = (
 
   };
 
-  const onExecutorClick = async (task: Task) => {
-    const accessToken = localStorage.getItem("accessToken");
-    if (!accessToken) {
-      return;
-    }  
-    try {
-      console.log({selectedBoardId})
-      const response = await axios.put(`http://localhost:8080/api/board/${selectedBoardId}/set/executor/${task.id}`,
-        {}
-        ,{
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-        },
-      }); 
-      fetchBoardById(selectedBoardId)
-    } catch (error: any) {
-      if (axios.isAxiosError(error)) {
-        if (error.response) {
-          console.error("Server responded with status:", error.response.status);
-          console.error("Response data:", error.response.data);
-        } else if (error.request) {
-          console.error("No response received from the server");
-        } else {
-          console.error("Error setting up the request:", error.message);
-        }
-      } else {
-        console.error("An error occurred:", error);
-      }
-    }
-    setCurrentTask(null)
-  }
-
-  const onRemoveClicked = async (task: Task) =>{
-    console.log("deleteEx")
-    const accessToken = localStorage.getItem("accessToken");
-    if (!accessToken) {
-      return;
-    }  
-    try {
-      console.log({selectedBoardId})
-      const response = await axios.put(`http://localhost:8080/api/board/${selectedBoardId}/delete/executor/${task.id}`,
-        {}
-        ,{
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-        },
-      }); 
-      fetchBoardById(selectedBoardId)
-    } catch (error: any) {
-      if (axios.isAxiosError(error)) {
-        if (error.response) {
-          console.error("Server responded with status:", error.response.status);
-          console.error("Response data:", error.response.data);
-        } else if (error.request) {
-          console.error("No response received from the server");
-        } else {
-          console.error("Error setting up the request:", error.message);
-        }
-      } else {
-        console.error("An error occurred:", error);
-      }
-    }
-    setCurrentTask(null)
-  }
 
   return {
     items,
     taskMap,
     handleDragEnd,
-    onExecutorClick,
-    onRemoveClicked,
   };
 };

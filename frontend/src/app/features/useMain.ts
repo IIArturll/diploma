@@ -2,18 +2,21 @@ import React, { useState } from "react";
 import { Board } from "../types/Board";
 import axios from "axios";
 import { isEqual } from "lodash";
+import { format, parseISO } from "date-fns";
+import { toZonedTime } from "date-fns-tz";
+import { Task } from "../types/Task";
 
-
-export function useMain(fetchBoards:()=>void) {
+export function useMain(fetchBoards:()=>void,selectedBoardId:string) {
   const[board, setBoard] = useState<Board>()
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const[isModalOpen, setIsModalOpen] = useState(false);
   const[isBoardEditOpen,setIsBoardEditOpen] = useState(false);
   const[isIviteUserOpen,setIsInviteUserOpen] = useState(false);
   const[isKickUserOpen,setIsKickUserOpen] = useState(false);
   const[invitationCode, setInvitationCode] = useState("")
   const[isAddBoardOpen,setIsAddBoardOpen] = useState(false)
-
-
+  const[currentTask, setCurrentTask] = useState<Task | null>(null);
+  const [expandedTaskId, setExpandedTaskId] = useState<string | null>(null);
+  
   const fetchBoardById = async (selectedBoardId: string) => { 
     if(!selectedBoardId) return;
     const accessToken = localStorage.getItem("accessToken");
@@ -94,8 +97,75 @@ export function useMain(fetchBoards:()=>void) {
     setIsAddBoardOpen(false)
   }
 
+
+  const onExecutorClick = async (task: Task) => {
+    const accessToken = localStorage.getItem("accessToken");
+    if (!accessToken) {
+      return;
+    }  
+    try {
+      console.log({selectedBoardId})
+      const response = await axios.put(`http://localhost:8080/api/board/${selectedBoardId}/set/executor/${task.id}`,
+        {}
+        ,{
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+        },
+      }); 
+      fetchBoardById(selectedBoardId)
+    } catch (error: any) {
+      if (axios.isAxiosError(error)) {
+        if (error.response) {
+          console.error("Server responded with status:", error.response.status);
+          console.error("Response data:", error.response.data);
+        } else if (error.request) {
+          console.error("No response received from the server");
+        } else {
+          console.error("Error setting up the request:", error.message);
+        }
+      } else {
+        console.error("An error occurred:", error);
+      }
+    }
+    setCurrentTask(null)
+  }
+
+  const onRemoveClicked = async (task: Task) =>{
+    console.log("deleteEx")
+    const accessToken = localStorage.getItem("accessToken");
+    if (!accessToken) {
+      return;
+    }  
+    try {
+      console.log({selectedBoardId})
+      const response = await axios.put(`http://localhost:8080/api/board/${selectedBoardId}/delete/executor/${task.id}`,
+        {}
+        ,{
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+        },
+      }); 
+      fetchBoardById(selectedBoardId)
+    } catch (error: any) {
+      if (axios.isAxiosError(error)) {
+        if (error.response) {
+          console.error("Server responded with status:", error.response.status);
+          console.error("Response data:", error.response.data);
+        } else if (error.request) {
+          console.error("No response received from the server");
+        } else {
+          console.error("Error setting up the request:", error.message);
+        }
+      } else {
+        console.error("An error occurred:", error);
+      }
+    }
+    setCurrentTask(null)
+  }
+
   return {
     board,
+    setBoard,
     fetchBoardById,
     checkTypeOfBoard,
     isModalOpen,
@@ -112,5 +182,11 @@ export function useMain(fetchBoards:()=>void) {
     onCancelRespondClicked,
     isAddBoardOpen,
     setIsAddBoardOpen,
+    onExecutorClick,
+    onRemoveClicked,
+    currentTask,
+    setCurrentTask,
+    expandedTaskId,
+    setExpandedTaskId
   }
 }
