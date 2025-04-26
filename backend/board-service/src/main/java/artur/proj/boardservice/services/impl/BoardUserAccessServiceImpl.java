@@ -48,9 +48,8 @@ public class BoardUserAccessServiceImpl implements BoardUserAccessService {
         UserEntity authorizedUser = getAuthorizedUser();
         BoardEntity board = getBoardById(boardId);
 
-        if (!board.getOwner().getId().equals(authorizedUser.getId())) {
-            throw new NotOwnerException();
-        }
+        authorizedUser.getBoards().stream().filter(b->b.getId().equals(id)).findFirst()
+                .orElseThrow(UnauthorizedAccessException::new);
 
         UserEntity invitedUser = getUserByEmail(email);
         BoardUserAccessEntity boardUserAccessEntity = new BoardUserAccessEntity();
